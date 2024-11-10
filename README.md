@@ -31,3 +31,20 @@ Al aumentar Max Distance, el efecto empieza desde más lejos y se extiende más.
 
 - Cambiar la curva de Logarithmic Rolloff a Linear Rolloff.  
 Con Logarithmic Rolloff, el efecto Doppler es más brusco y realista. Con Linear Rolloff, es uniforme.
+
+
+#### Tarea: Configurar un mezclador de sonidos, aplica a uno de los grupo un filtro de echo y el resto de filtros libre. Configura cada grupo y masteriza el efecto final de los sonidos que estás mezclando. Explica los cambios que has logrado con tu mezclador.
+
+Añadimos dos grupos. El primero tiene simplemente un filtro de echo.
+
+![](https://github.com/jsfabiani/Tarea_9_FDV/blob/main/Screenshots/FDV_9_Screenshot_e.png)
+
+![](https://github.com/jsfabiani/Tarea_9_FDV/blob/main/Screenshots/FDV_9_Screenshot_f.png)
+
+![](https://github.com/jsfabiani/Tarea_9_FDV/blob/main/Videos/FDV_9_Video_a.mp4)
+
+El segundo tiene tres filtros: un high pass, uno de distorsión y un reverb. Combinados, cambian la música para darle un efecto de baja fidelidad.
+
+![](https://github.com/jsfabiani/Tarea_9_FDV/blob/main/Screenshots/FDV_9_Screenshot_g.png)
+
+![](https://github.com/jsfabiani/Tarea_9_FDV/blob/main/Videos/FDV_9_Video_b.mp4)
