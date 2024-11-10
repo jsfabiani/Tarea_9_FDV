@@ -48,3 +48,46 @@ El segundo tiene tres filtros: un high pass, uno de distorsión y un reverb. Com
 ![](https://github.com/jsfabiani/Tarea_9_FDV/blob/main/Screenshots/FDV_9_Screenshot_g.png)
 
 ![](https://github.com/jsfabiani/Tarea_9_FDV/blob/main/Videos/FDV_9_Video_b.mp4)
+
+
+## Scripting
+
+#### Tarea: Implementar un script que al pulsar la tecla p accione el movimiento de una esfera en la escena y reproduzca un sonido en bucle hasta que se pulse la tecla s.
+
+Creamos el siguiente script. El booleano m_Play sirve para guardar el estado del Audio Source. Cuando pulsamos p y m_Play es falso, suena el sonido y empieza a moverse. Cuando pulsamos s y m_Play es verdadero, detiene el sonido y el movimiento.
+
+```
+public class LoopSound : MonoBehaviour
+{
+    public float Speed = 50.0f;
+    public Vector3 direction = new Vector3 (1.0f, 0.0f, 0.0f);
+    [SerializeField] AudioSource m_AudioSource;
+    private bool m_Play = false;
+    // Start is called before the first frame update
+    void Start()
+    {
+        m_AudioSource = GetComponent<AudioSource>();
+        m_AudioSource.loop = true;
+        m_AudioSource.Stop();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown("p") && m_Play == false)
+        {
+            m_AudioSource.Play();
+            m_Play = true;
+        }
+        if (Input.GetKeyDown("s") && m_Play == true)
+        {
+            m_AudioSource.Pause();
+            m_Play = false;
+        }
+        if (m_Play == true)
+        {
+            transform.Translate(direction * Speed * Time.deltaTime);
+        }
+    }
+}
+```
