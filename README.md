@@ -204,3 +204,108 @@ void Update()
 Al estar usando el mismo AudioSource para los pasos y los impactos, hay algo de clipping al reproducir los impactos.
 
 ![](https://github.com/jsfabiani/Tarea_9_FDV/blob/main/Videos/FDV_9_Video_c.mp4)
+
+
+#### Tarea: añadir efectos de sonido a la escena 2D.
+
+Creamos estos tres grupos de AudioMixer:
+
+![](https://github.com/jsfabiani/Tarea_9_FDV/blob/main/Screenshots/FDV_9_Screenshot_j.png)
+
+Añadimos un AudioSource al personaje, al que asignamos el AudioMixer de SFX. En el controlador del personaje, añadimos los siguientes efectos:
+
+Para el salto:
+
+```
+    private void Jump()
+    {
+        rb2D.AddForce(Vector2.up * jumpImpulse, ForceMode2D.Impulse);
+        audioSource.PlayOneShot(audioJump);
+        isJumping = true;
+    }
+```
+
+Para recolección de objetos y recuperar vida:
+
+```
+private void OnTriggerEnter2D(Collider2D trigger)
+{
+    // Collect power ups and increase the score
+    if (trigger.gameObject.tag == "PowerUp")
+    {
+        ...
+        audioSource.PlayOneShot(audioPowerUp);
+    }
+
+    if (trigger.gameObject.CompareTag("Healing"))
+    {
+        ...
+        audioSource.PlayOneShot(audioHeal);
+    }
+```
+
+Para perder vida
+
+```
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        ...
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            ...
+            audioSource.PlayOneShot(audioHurt);
+        }
+    }
+```
+
+Para el sonido de ambiente, creamos dos GameObjects vacíos con BoxCollider en modo trigger, que delimitarán las áreas. A cada una le ponemos un AudioSource con un sonido diferente, y a ambas les asignamos el AudioMixer de Ambience.
+
+
+En el PlayerController, creamos un evento de delegado para controlar este cambio:
+
+```
+public delegate void OnAreaChange(string name);
+public static event OnAreaChange onAreaChange;
+
+...
+private void OnTriggerEnter2D(Collider2D trigger)
+{
+    ...
+    if (trigger.gameObject.layer == LayerMask.NameToLayer("AreaLimits"))
+    {
+        onAreaChange?.Invoke(trigger.gameObject.name);
+    }
+}
+```
+
+Añadimos el Script AreaBackgroundSound que escuchará el evento y comparará el nombre del objeto para activar o desactivar el AudioSource.
+
+```
+public class AreaBackgroundSound : MonoBehaviour
+{
+    [SerializeField] private AudioSource audioSource;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+        PlayerController.onAreaChange += changeBackgroundSound;
+    }
+
+
+    void changeBackgroundSound(string gameObjectName)
+    {
+        Debug.Log("Activated");
+        if ( gameObjectName == this.name)
+        {
+            audioSource.Play();
+        }
+        else
+        {
+            audioSource.Stop();
+        }
+    }
+}
+```
+
+![](https://github.com/jsfabiani/Tarea_9_FDV/blob/main/Videos/FDV_9_Video_d.mp4)
